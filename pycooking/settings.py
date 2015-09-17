@@ -41,6 +41,9 @@ INSTALLED_APPS = (
     'taggit',
     'django.contrib.sites',
     'django_comments',
+    'recipes',
+    'recipe_steps',
+    'hubs',
 )
 
 MIDDLEWARE_CLASSES = (
