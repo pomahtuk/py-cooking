@@ -41,8 +41,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django_comments',
     'recipes',
-    'recipe_steps',
     'hubs',
+    'djcelery',
+    'mptt',
+    'pipeline',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,7 +63,9 @@ ROOT_URLCONF = 'pycooking.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,3 +112,20 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + '/static'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.CachedFileFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, '..', 'bower_components'), )
+
+# Celery
+
+BROKER_URL = 'redis://localhost:6379/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}  # 1 hour.
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'

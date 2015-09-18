@@ -60,3 +60,5 @@ target/
 
 static
 !static/.gitkeep
+
+bower_components
